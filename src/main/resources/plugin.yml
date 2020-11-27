@@ -1,0 +1,15 @@
+name: Rocket
+main: com.github.devil0414.rocket.plugin.RocketPlugin
+depend: [Kotlin, Tap, WorldEdit]
+authors: [devil0414]
+version: $pluginVersion
+api-version: '1.16'
+commands:
+  rocket:
+    permission: Rocket.command
+    description: Rocket Command
+    usage: /<command> help
+permissions:
+  Rocket.command:
+    default: op
+    description: Rocket Command Permission
