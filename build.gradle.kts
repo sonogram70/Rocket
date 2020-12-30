@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "1.3.72"
     id("com.github.johnrengelman.shadow") version "5.2.0"
+    `maven-publish`
 }
 
 group = properties["pluginGroup"]!!
@@ -48,6 +49,18 @@ tasks {
     create<Copy>("distJar") {
         from(shadowJar)
         into("C:\\Users\\yongh\\Desktop\\마크\\서버\\parkour regions psychics\\plugins")
+    }
+    create<Jar>("sourcesJar") {
+        archiveClassifier.set("sources")
+        from(sourceSets["main"].allSource)
+    }
+}
+publishing {
+    publications {
+        create<MavenPublication>("Rocket") {
+            from(components["java"])
+            artifact(tasks["sourcesJar"])
+        }
     }
 }
 
