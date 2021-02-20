@@ -18,9 +18,8 @@ repositories {
 dependencies {
     compileOnly(kotlin("stdlib-jdk8")) //kotlin
     compileOnly("junit:junit:4.12") //junit
-    compileOnly("com.destroystokyo.paper:paper-api:1.16.4-R0.1-SNAPSHOT") //paper
-    compileOnly("com.comphenix.protocol:ProtocolLib:4.6.0-SNAPSHOT") //protocollib
-    compileOnly("com.github.noonmaru:tap:3.2.5") //tap
+    compileOnly("com.destroystokyo.paper:paper-api:1.16.1-R0.1-SNAPSHOT") //paper
+    compileOnly("com.github.noonmaru:tap:2.8.8") //tap
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.0") //worldedit
     implementation("com.github.noonmaru:kommand:0.1.9")
 }
@@ -48,7 +47,7 @@ tasks {
     }
     create<Copy>("distJar") {
         from(shadowJar)
-        into("C:\\Users\\yongh\\Desktop\\마크\\서버\\parkour regions psychics\\plugins")
+        into("C:\\Users\\User00\\Desktop\\server\\plugins")
     }
     create<Jar>("sourcesJar") {
         archiveClassifier.set("sources")

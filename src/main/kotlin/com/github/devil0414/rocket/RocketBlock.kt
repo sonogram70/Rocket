@@ -17,6 +17,7 @@ import org.bukkit.FluidCollisionMode
 import org.bukkit.Particle
 import org.bukkit.entity.EntityType
 import kotlin.random.Random
+import kotlin.random.Random.Default.nextFloat
 
 object RocketBlocks {
     val Hopper = Fire()
@@ -102,8 +103,6 @@ class Fire : RocketBlock() {
             rising = true
             task = launch.runTaskTimer(this, 0L, 1L)
         }
-        private lateinit var projectileManager: Launch
-        private var fire: Firestand? = null
         override fun run() {
             risingSpeed = min(0.06, risingSpeed + 0.01)
             stand.move(0.0, risingSpeed, 0.0)
@@ -115,92 +114,33 @@ class Fire : RocketBlock() {
                 stand.remove()
                 shulker.remove()
             }
-            fire = Firestand(locstand)
-            fire?.let { fire->
-                val x = Random.nextInt(-1, 1).toFloat()
-                val z = Random.nextInt(-1, 1).toFloat()
-                val projectile = FireProjectile(fire, x, z)
-                projectileManager.launchProjectile(fire.location, projectile)
-                projectile.velocity = fire.location.direction.multiply(5)
-                this.fire = null
+            stand.location.run {
+                var dx = 0
+                var dy = -0.5
+                var dz = 0
+                var wiggle = 0.4
+                repeat(10) {
+                    for (i in 0 until 10) {
+                        world.spawnParticle(
+                            Particle.FLAME,
+                            loc,
+                            0,
+                            dx + nextFloat() * wiggle - wiggle / 2.0,
+                            dy + nextFloat() * wiggle - wiggle / 2.0,
+                            dz + nextFloat() * wiggle - wiggle / 2.0,
+                            1.0,
+                            null,
+                            true
+                        )
+                    }
+                }
             }
-            FileManager.isEnabled = true
         }
         override fun destroy() {
             stand.remove()
             shulker.remove()
             standBlock.remove()
         }
-        inner class Firestand(internal val location: Location) {
-            private val armorStands: MutableList<FakeEntity>
-            private lateinit var launch : Launch
-            init {
-                val armorStands = arrayListOf<FakeEntity>()
-                armorStands += launch.spawnFakeEntity(location, ArmorStand::class.java).apply {
-                updateMetadata<ArmorStand> {
-                        invisible = true
-
-                    }
-                }
-                armorStands.trimToSize()
-                this.armorStands = armorStands
-            }
-            fun updateLocation(offsetY: Double = 0.0, newLoc : Location = location) {
-                val x = newLoc.x
-                val y = newLoc.y
-                val z = newLoc.z
-
-                location.apply {
-                    world = newLoc.world
-                    this.x = x
-                    this.y = y
-                    this.z = z
-                }
-
-                val count = armorStands.count()
-                val loc = newLoc.clone()
-
-                armorStands.forEachIndexed { index, armorStand ->
-                    armorStand.moveTo(loc.apply {
-                        copy(newLoc)
-                        this.y += offsetY - 1.1
-                        yaw = (360.0 * index / count * 12.5).toFloat()
-                        pitch = 0.0F
-                    })
-                }
-            }
-            fun remove() {
-                armorStands.forEach { it.remove() }
-                armorStands.clear()
-            }
-        }
-        inner class FireProjectile(private val fire: Firestand, private val x: Float, private val z: Float) : RocketProjectile(40, 10.0) {
-            override fun onMove(movement: Movement) {
-                val location = Location(fire.location.world, fire.location.x + x, fire.location.y - 1, fire.location.z + z)
-                fire.updateLocation(0.0, location)
-            }
-            override fun onTrail(trail: Trail) {
-                trail.velocity?.let { velocity ->
-                    val from = trail.from
-                    val world = from.world
-                    val length = velocity.normalizeAndLength()
-                    world.rayTrace(from, velocity, length, FluidCollisionMode.NEVER, true, 1.0, null)?.let { result->
-                        remove()
-                    }
-                    val to = trail.to
-                    trail(from, to, 0.25) { w, x, y, z ->
-                        w.spawnParticle(Particle.FLAME, x, y, z, 100, 0.0, 0.0, 0.0, 0.0)
-                    }
-                }
-                }
-            override fun onPostUpdate() {
-                velocity = velocity.multiply(1.0 + 0.1)
-            }
-
-            override fun onRemove() {
-                fire.remove()
-            }
-            }
         }
     }
 class OtherBlock : RocketBlock() {
