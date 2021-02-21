@@ -4,3 +4,5 @@ out/
 # Gradle
 build/
 .gradle/
+# Server
+.server/
