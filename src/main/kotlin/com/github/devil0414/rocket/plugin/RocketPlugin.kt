@@ -7,10 +7,10 @@ import com.github.devil0414.rocket.Rockets
 import com.github.devil0414.rocket.command.KommandRocket
 import com.github.devil0414.rocket.command.KommandRocket.register
 import com.github.devil0414.rocket.task.RocketScheduler
-import com.github.noonmaru.kommand.kommand
-import com.github.noonmaru.tap.event.EntityEventManager
-import com.github.noonmaru.tap.fake.FakeEntity
-import com.github.noonmaru.tap.fake.FakeEntityServer
+import com.github.monun.kommand.kommand
+import com.github.monun.tap.event.EntityEventManager
+import com.github.monun.tap.fake.FakeEntity
+import com.github.monun.tap.fake.FakeEntityServer
 import org.bukkit.plugin.java.JavaPlugin
 
 class RocketPlugin : JavaPlugin() {
@@ -25,7 +25,7 @@ class RocketPlugin : JavaPlugin() {
         val rockets : Rockets? = null
         rockets?.initialize()
         server.apply {
-            scheduler.runTaskTimer(this@RocketPlugin, RocketPluginScheduler(fakeEntityServer), 0L, 1L)
+            scheduler.runTaskTimer(this@RocketPlugin, RocketPluginScheduler(), 0L, 1L)
         }
         kommand {
             register("rocket") {

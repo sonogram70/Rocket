@@ -18,10 +18,10 @@ repositories {
 dependencies {
     compileOnly(kotlin("stdlib-jdk8")) //kotlin
     compileOnly("junit:junit:4.12") //junit
-    compileOnly("com.destroystokyo.paper:paper-api:1.16.1-R0.1-SNAPSHOT") //paper
-    compileOnly("com.github.noonmaru:tap:2.8.8") //tap
-    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.0") //worldedit
-    implementation("com.github.noonmaru:kommand:0.1.9")
+    compileOnly("com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT") //paper
+    implementation("com.github.monun:tap:3.3.3") //tap
+    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.2") //worldedit
+    implementation("com.github.monun:kommand:0.7.+")
 }
 
 tasks {
@@ -47,7 +47,13 @@ tasks {
     }
     create<Copy>("distJar") {
         from(shadowJar)
-        into("C:\\Users\\yongh\\Desktop\\server\\rocket\\plugins")
+        into("C:\\Users\\User00\\Desktop\\server\\plugins")
+    }
+    create<Copy>("copyToServer") {
+        from(shadowJar)
+        var dest = File(rootDir, ".server/plugins")
+        if(File(dest, shadowJar.get().archiveFileName.get()).exists()) dest = File(dest, "update")
+        into(dest)
     }
     create<Jar>("sourcesJar") {
         archiveClassifier.set("sources")

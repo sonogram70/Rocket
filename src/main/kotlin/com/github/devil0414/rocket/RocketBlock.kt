@@ -1,9 +1,9 @@
 package com.github.devil0414.rocket
 
 import com.github.devil0414.rocket.task.RocketTask
-import com.github.noonmaru.tap.fake.*
-import com.github.noonmaru.tap.math.copy
-import com.github.noonmaru.tap.math.normalizeAndLength
+import com.github.monun.tap.fake.*
+import com.github.monun.tap.math.copy
+import com.github.monun.tap.math.normalizeAndLength
 import com.google.common.collect.ImmutableList
 import org.bukkit.Location
 import org.bukkit.Material
@@ -12,7 +12,7 @@ import org.bukkit.entity.ArmorStand
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Shulker
 import kotlin.math.min
-import com.github.noonmaru.tap.trail.trail
+import com.github.monun.tap.trail.trail
 import org.bukkit.FluidCollisionMode
 import org.bukkit.Particle
 import org.bukkit.entity.EntityType
@@ -104,7 +104,7 @@ class Smoke : RocketBlock() {
             stand.move(0.0, risingSpeed, 0.0)
             val loc = stand.location.subtract(0.0, 1.0, 0.0)
             val locstand = stand.location
-            if(loc.y >= 50) {
+            if(stand.bukkitEntity.ticksLived >= 50) {
                 task.cancel()
                 standBlock.remove()
                 stand.remove()
@@ -118,7 +118,7 @@ class Smoke : RocketBlock() {
                     for (i in 0 until 10) {
                         world.spawnParticle(
                             Particle.CLOUD,
-                            loc,
+                            stand.location,
                             0,
                             dx + nextFloat() * wiggle - wiggle / 2.0,
                             dy + nextFloat() * wiggle - wiggle / 2.0,
@@ -172,11 +172,13 @@ class Fire : RocketBlock() {
             task = launch.runTaskTimer(this, 0L, 1L)
         }
         override fun run() {
+            var ticks = 0
+            ticks++
             risingSpeed = min(0.06, risingSpeed + 0.01)
             stand.move(0.0, risingSpeed, 0.0)
             val loc = stand.location.subtract(0.0, 1.0, 0.0)
             val locstand = stand.location
-            if(loc.y >= 50) {
+            if(ticks >= 50) {
                 task.cancel()
                 standBlock.remove()
                 stand.remove()
@@ -190,7 +192,7 @@ class Fire : RocketBlock() {
                     for (i in 0 until 10) {
                         world.spawnParticle(
                             Particle.FLAME,
-                            loc,
+                            stand.location,
                             0,
                             dx + nextFloat() * wiggle - wiggle / 2.0,
                             dy + nextFloat() * wiggle - wiggle / 2.0,

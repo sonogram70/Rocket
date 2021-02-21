@@ -3,8 +3,8 @@ package com.github.devil0414.rocket
 import com.github.devil0414.rocket.plugin.RocketPlugin
 import com.github.devil0414.rocket.task.RocketScheduler
 import com.github.devil0414.rocket.task.RocketTask
-import com.github.noonmaru.tap.fake.FakeEntity
-import com.github.noonmaru.tap.fake.FakeProjectileManager
+import com.github.monun.tap.fake.FakeEntity
+import com.github.monun.tap.fake.FakeProjectileManager
 import com.google.common.collect.ImmutableMap
 import com.sk89q.worldedit.bukkit.BukkitAdapter
 import com.sk89q.worldedit.regions.Region
