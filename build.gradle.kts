@@ -47,7 +47,7 @@ tasks {
     }
     create<Copy>("distJar") {
         from(shadowJar)
-        into("C:\\Users\\User00\\Desktop\\server\\plugins")
+        into("C:\\Users\\yongh\\Desktop\\server\\rocket\\plugins")
     }
     create<Jar>("sourcesJar") {
         archiveClassifier.set("sources")

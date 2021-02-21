@@ -85,11 +85,6 @@ class Launch(val rockets: Rockets) {
             action.invoke(world.getBlockAt(it.x, it.y, it.z))
         }
     }
-    fun launchProjectile(location: Location, projectile: RocketProjectile) {
-        projectile.rocket = this
-
-        projectileManager.launch(location, projectile)
-    }
     fun spawnFakeEntity(location: Location, entityClass: Class<out Entity>): FakeEntity {
         checkState()
         val fakeEntity = FileManager.fakeEntityServer.spawnEntity(location, entityClass)

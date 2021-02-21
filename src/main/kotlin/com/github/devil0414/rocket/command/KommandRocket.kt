@@ -44,6 +44,11 @@ object KommandRocket {
                     }
                 }
             }
+            then("clear") {
+                executes {
+                    FileManager.fakeEntityServer.clear()
+                }
+            }
             then("launchpad") {
                 require {
                     this is Player
