@@ -1,7 +1,7 @@
 name: Rocket
 main: com.github.devil0414.rocket.plugin.RocketPlugin
 depend: [Kotlin, WorldEdit]
-authors: [devil0414]
+authors: [sonogram70]
 version: $pluginVersion
 api-version: '1.16'
 commands:

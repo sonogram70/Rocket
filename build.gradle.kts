@@ -52,7 +52,6 @@ tasks {
     create<Copy>("copyToServer") {
         from(shadowJar)
         var dest = File(rootDir, ".server/plugins")
-        if(File(dest, shadowJar.get().archiveFileName.get()).exists()) dest = File(dest, "update")
         into(dest)
     }
     create<Jar>("sourcesJar") {

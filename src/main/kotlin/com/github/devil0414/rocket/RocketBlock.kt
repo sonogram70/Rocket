@@ -99,12 +99,14 @@ class Smoke : RocketBlock() {
             rising = true
             task = launch.runTaskTimer(this, 0L, 1L)
         }
+        private var ticks = 0
         override fun run() {
-            risingSpeed = min(0.06, risingSpeed + 0.01)
+            ++ticks
+            risingSpeed = min(0.08, risingSpeed + 0.01)
             stand.move(0.0, risingSpeed, 0.0)
             val loc = stand.location.subtract(0.0, 1.0, 0.0)
             val locstand = stand.location
-            if(stand.bukkitEntity.ticksLived >= 50) {
+            if(ticks >= 800) {
                 task.cancel()
                 standBlock.remove()
                 stand.remove()
@@ -171,14 +173,14 @@ class Fire : RocketBlock() {
             rising = true
             task = launch.runTaskTimer(this, 0L, 1L)
         }
+        private var ticks = 0
         override fun run() {
-            var ticks = 0
-            ticks++
-            risingSpeed = min(0.06, risingSpeed + 0.01)
+            ++ticks
+            risingSpeed = min(0.08, risingSpeed + 0.01)
             stand.move(0.0, risingSpeed, 0.0)
             val loc = stand.location.subtract(0.0, 1.0, 0.0)
             val locstand = stand.location
-            if(ticks >= 50) {
+            if(ticks >= 800) {
                 task.cancel()
                 standBlock.remove()
                 stand.remove()
@@ -249,11 +251,13 @@ class OtherBlock : RocketBlock() {
             }
             task = launch.runTaskTimer(this, 0L, 1L)
         }
+        private var ticks = 0
         override fun run() {
-            risingSpeed = min(0.06, risingSpeed + 0.01)
+            ++ticks
+            risingSpeed = min(0.08, risingSpeed + 0.01)
             stand.move(0.0, risingSpeed, 0.0)
             val loc = stand.location.subtract(0.0, 1.0, 0.0)
-            if(loc.y >= 50) {
+            if(ticks >= 800) {
                 task.cancel()
                 standBlock.remove()
                 stand.remove()
@@ -303,11 +307,13 @@ class Noshulker : RocketBlock() {
             }
             task = launch.runTaskTimer(this, 0L, 1L)
         }
+        private var ticks = 0
         override fun run() {
-            risingSpeed = min(0.06, risingSpeed + 0.01)
+            ++ticks
+            risingSpeed = min(0.08, risingSpeed + 0.01)
             stand.move(0.0, risingSpeed, 0.0)
             val loc = stand.location.subtract(0.0, 1.0, 0.0)
-            if(loc.y >= 50) {
+            if(ticks >= 800) {
                 task.cancel()
                 standBlock.remove()
                 stand.remove()
