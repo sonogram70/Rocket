@@ -16,6 +16,7 @@ import com.github.monun.tap.trail.trail
 import org.bukkit.FluidCollisionMode
 import org.bukkit.Particle
 import org.bukkit.entity.EntityType
+import kotlin.properties.Delegates
 import kotlin.random.Random
 import kotlin.random.Random.Default.nextFloat
 
@@ -75,14 +76,24 @@ class Smoke : RocketBlock() {
         private lateinit var task: RocketTask
         private var rising = false
         private var risingSpeed = 0.05
+        lateinit var loc : Location
+        var rMx by Delegates.notNull<Int>()
+        var rmx by Delegates.notNull<Int>()
+        var ry by Delegates.notNull<Double>()
+        var rMz by Delegates.notNull<Int>()
+        var rmz by Delegates.notNull<Int>()
+        var x by Delegates.notNull<Double>()
+        var y by Delegates.notNull<Double>()
+        var z by Delegates.notNull<Double>()
+        lateinit var location : Location
         override fun onInitialize(launch: Launch, location: Location) {
             val loc = location
             val fakeServer = FileManager.fakeEntityServer
-            val rMx = launch.rockets.region.maximumPoint.x
-            val rmx = launch.rockets.region.minimumPoint.x
-            val ry = launch.rockets.region.minimumY
-            val rMz = launch.rockets.region.maximumPoint.z
-            val rmz = launch.rockets.region.minimumPoint.z
+            rMx = launch.rockets.region.maximumPoint.x
+            rmx = launch.rockets.region.minimumPoint.x
+            ry = launch.rockets.region.minimumY.toDouble()
+            rMz = launch.rockets.region.maximumPoint.z
+            rmz = launch.rockets.region.minimumPoint.z
             standBlock = fakeServer.spawnFallingBlock(loc, block.blockData)
             stand = fakeServer.spawnEntity(loc, ArmorStand::class.java)
             stand.updateMetadata<ArmorStand> {
@@ -90,10 +101,10 @@ class Smoke : RocketBlock() {
                 invisible = true
             }
             stand.addPassenger(standBlock)
-            val x = block.location.x
-            val y = block.location.y
-            val z = block.location.z
-            val location = Location(block.world, x - (rMx + rmx) / 2 + loc.x, y - ry + loc.y, z - (rMz + rmz) / 2 + loc.z)
+            x = block.location.x
+            y = block.location.y
+            z = block.location.z
+            this.location = Location(block.world, x - (rMx + rmx) / 2 + loc.x, y - ry + loc.y, z - (rMz + rmz) / 2 + loc.z)
             stand.moveTo(location)
 
             rising = true
@@ -102,6 +113,8 @@ class Smoke : RocketBlock() {
         private var ticks = 0
         override fun run() {
             ++ticks
+            location.y += 0.1
+            stand.moveTo(location)
             risingSpeed = min(0.08, risingSpeed + 0.01)
             stand.move(0.0, risingSpeed, 0.0)
             val loc = stand.location.subtract(0.0, 1.0, 0.0)
